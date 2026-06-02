@@ -463,6 +463,7 @@
       initCountUpReveal();
       animateHeroLetters();  /* split names + start dancing */
       initNavDots();
+      initAutoScroll();
     });
 
     /* ── Hero name letter dance ─────────────────────
@@ -623,12 +624,76 @@
       }, duration / steps);
     }
 
-    /* ── Events carousel — dot tracker + animation trigger ──
-       On mobile the two event cards are side-by-side in a
-       horizontal scroll container. This watches the scroll
-       position to update the indicator dots and ensures the
-       second card's animation fires when swiped into view.
+    /* ── Auto-scroll — advances sections automatically ─────────
+       Every 4 s scrolls to the next section; loops back to hero.
+       Uses window.scrollTo(x, y) — more reliable than scrollIntoView
+       with scroll-snap-type: mandatory on iOS Safari.
+       CSS scroll-behavior: smooth (already on html) handles animation.
     ───────────────────────────────────────────────── */
+    function initAutoScroll() {
+      var secIds  = ['top', 'sec-countdown', 'sec-family',
+                     'sec-events-wedding', 'sec-events-reception', 'sec-message'];
+      var AUTO_MS = 4000;
+      var IDLE_MS = 3000;
+      var curIdx  = 0;
+      var timer   = null;
+      var busy    = false;
+
+      /* Get absolute Y position of an element from document top */
+      function absTop(el) {
+        return el.getBoundingClientRect().top +
+               (window.pageYOffset || document.documentElement.scrollTop);
+      }
+
+      /* Advance to next section and scroll to it */
+      function advance() {
+        curIdx = (curIdx + 1) % secIds.length;
+        var el = document.getElementById(secIds[curIdx]);
+        if (!el) return;
+        busy = true;
+        window.scrollTo(0, absTop(el));   /* uses CSS scroll-behavior:smooth */
+        setTimeout(function () { busy = false; }, 1200);
+      }
+
+      /* Schedule next advance after ms milliseconds.
+         The last section (With All Our Love) gets 9 s to allow reading. */
+      function schedule(ms) {
+        clearTimeout(timer);
+        timer = setTimeout(function () {
+          advance();
+          var wait = (curIdx === secIds.length - 1) ? 9000 : AUTO_MS;
+          schedule(wait);
+        }, ms);
+      }
+
+      /* Keep curIdx in sync when user scrolls manually */
+      var obs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) {
+            var i = secIds.indexOf(e.target.id);
+            if (i >= 0) curIdx = i;
+          }
+        });
+      }, { threshold: 0.5 });
+      secIds.forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) obs.observe(el);
+      });
+
+      /* User touch → give 3 s reading grace before next advance */
+      document.addEventListener('touchstart', function () {
+        if (!busy) schedule(IDLE_MS);
+      }, { passive: true });
+
+      /* Pause when tab is backgrounded, resume on return */
+      document.addEventListener('visibilitychange', function () {
+        if (document.hidden) clearTimeout(timer);
+        else schedule(AUTO_MS);
+      });
+
+      schedule(AUTO_MS);
+    }
+
     /* ── Section navigation dots ──────────────────────
        Tracks visible section and activates matching dot.
        Tapping a dot smooth-scrolls to that section.

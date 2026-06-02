@@ -1065,7 +1065,7 @@ html, body { overflow-x: hidden; }
 @media (max-width: 768px) {
 
   /* ─ Full-page section UX — strict page-by-page snap ─ */
-  html               { scroll-snap-type: y mandatory; }
+  html               { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
   .hero              { height: 100vh; height: 100svh;
                        scroll-snap-align: start; }
   .section           { padding: 0 18px;
@@ -1194,6 +1194,9 @@ html, body { overflow-x: hidden; }
   .event-addr        { font-size: 11px; line-height: 1.65; margin-bottom: 16px; }
   .event-map         { font-size: 8.5px; }
   .section           { padding: 0 16px; } /* override 768 padding — flex centering handles vertical */
+
+  /* ─ Message — hide oversized decorative heart watermark on mobile ─ */
+  .message-section::before { display: none; }
 
   /* ─ Message ─ */
   .ss-logo-img       { width: clamp(100px, 32vw, 148px); }

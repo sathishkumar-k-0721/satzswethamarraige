@@ -311,9 +311,14 @@ function initParticles(canvasId, heartCount) {
   if (!canvas) return;
   var ctx = canvas.getContext('2d');
 
+  /* Reduce particle count on mobile — significant perf win */
+  if (window.innerWidth < 768) {
+    heartCount = Math.min(heartCount, 8);
+  }
+
   var hearts      = [];
   var butterflies = [];
-  var bfCount     = Math.max(5, Math.floor(heartCount * 0.30));
+  var bfCount     = Math.max(window.innerWidth < 768 ? 2 : 5, Math.floor(heartCount * 0.30));
 
   function resize() {
     canvas.width  = window.innerWidth;

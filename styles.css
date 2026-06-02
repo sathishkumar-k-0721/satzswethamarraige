@@ -69,6 +69,25 @@ body {
 }
 #overlay.active { opacity:1; pointer-events:all; }
 
+/* Page entrance loader — invitation.html */
+#page-loader {
+  position: fixed;
+  inset: 0;
+  background: var(--bg-deep);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.7s ease;
+}
+#page-loader.ready { opacity: 0; pointer-events: none; }
+.loader-heart {
+  font-size: 44px;
+  color: var(--rose);
+  filter: drop-shadow(0 0 20px rgba(212,116,141,0.85));
+  animation: pulseHeart 0.85s ease infinite;
+}
+
 /* ══════════════════════════════════════════════════
    SHARED COMPONENTS
 ══════════════════════════════════════════════════ */
@@ -761,6 +780,29 @@ body {
 }
 .event-map:hover { color:var(--gold-light); border-color:var(--gold); }
 
+/* Carousel dot indicator (events section, mobile) */
+.carousel-dots {
+  display: none;          /* shown via media query */
+  justify-content: center;
+  align-items: center;
+  gap: 9px;
+  margin-top: 18px;
+}
+.cdot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: transparent;
+  border: 1.5px solid rgba(201,168,76,0.4);
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+.cdot-active {
+  background: var(--gold);
+  border-color: var(--gold);
+  transform: scale(1.45);
+}
+
 /* ══════════════════════════════════════════════════
    MESSAGE SECTION
 ══════════════════════════════════════════════════ */
@@ -930,6 +972,38 @@ footer {
 .footer-credit strong { color: rgba(212,116,141,0.45); }
 
 /* ══════════════════════════════════════════════════
+   SECTION NAV DOTS  (invitation page, mobile)
+══════════════════════════════════════════════════ */
+.nav-dots {
+  position: fixed;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: none;          /* shown via media query */
+  flex-direction: column;
+  gap: 11px;
+  z-index: 200;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.nav-dots.visible { opacity: 1; }
+.nav-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(201,168,76,0.4);
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
+}
+.nav-dot.active {
+  background: var(--gold);
+  border-color: var(--gold);
+  transform: scale(1.6);
+}
+
+/* ══════════════════════════════════════════════════
    KEYFRAMES
 ══════════════════════════════════════════════════ */
 @keyframes fadeInDown {
@@ -990,8 +1064,20 @@ html, body { overflow-x: hidden; }
 ───────────────────────────────────────────────── */
 @media (max-width: 768px) {
 
+  /* ─ Full-page section UX — strict page-by-page snap ─ */
+  html               { scroll-snap-type: y mandatory; }
+  .hero              { height: 100vh; height: 100svh;
+                       scroll-snap-align: start; }
+  .section           { padding: 0 18px;
+                       height: 100vh; height: 100svh;
+                       display: flex; flex-direction: column;
+                       align-items: center; justify-content: center;
+                       scroll-snap-align: start; }
+  .section .section-inner { width: 100%; }
+  footer             { scroll-snap-align: start; }
+  .nav-dots          { display: flex; }
+
   /* Sections */
-  .section           { padding: 48px 18px; }
   .section-header    { margin-bottom: 30px; }
   .s-title           { font-size: clamp(22px, 5.5vw, 34px); }
   .s-sub             { font-size: 15px; margin-top: 10px; }
@@ -1041,7 +1127,7 @@ html, body { overflow-x: hidden; }
   .family-role       { font-size: 8px; }
 
   /* ─ Events ─ */
-  .events-grid       { grid-template-columns: 1fr; gap: 24px; }
+  .events-grid       { grid-template-columns: 1fr; gap: 20px; }
   .event-card        { padding: 32px 22px 28px; }
   .event-title       { font-size: 22px; margin-bottom: 18px; }
   .event-date        { font-size: 18px; }
@@ -1107,7 +1193,7 @@ html, body { overflow-x: hidden; }
   .event-venue       { font-size: 17px; }
   .event-addr        { font-size: 11px; line-height: 1.65; margin-bottom: 16px; }
   .event-map         { font-size: 8.5px; }
-  .events-grid       { gap: 20px; }
+  .section           { padding: 0 16px; } /* override 768 padding — flex centering handles vertical */
 
   /* ─ Message ─ */
   .ss-logo-img       { width: clamp(100px, 32vw, 148px); }
@@ -1119,6 +1205,17 @@ html, body { overflow-x: hidden; }
   /* ─ Dividers ─ */
   .ornate-rule       { gap: 10px; }
   .rule-icon         { font-size: 14px; }
+
+  /* ─ Performance: remove expensive GPU layers on phone ─ */
+  .event-card {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgba(6,0,15,0.97);
+  }
+  .entry-card {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
 }
 
 /* ─────────────────────────────────────────────────

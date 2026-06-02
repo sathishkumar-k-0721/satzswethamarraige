@@ -6,6 +6,8 @@
   <title>Sathishkumar K &amp; Swetha M — Wedding Invitation</title>
   <meta name="description" content="Join us to celebrate the wedding of Sathishkumar K &amp; Swetha M — 18 June 2026 at Karaikudi · Reception 21 June at Chennai" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💍</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="styles.css" />
 
   <style>
@@ -140,9 +142,30 @@
     .section-glow {
       animation: ia-section-glow 1.6s ease forwards;
     }
+
+    /* ─── Mobile: strip expensive blur from scroll animations ─── */
+    @media (max-width: 768px) {
+      /* Redefine ia-glide without the filter:blur — saves huge GPU cost */
+      @keyframes ia-glide {
+        0%   { opacity:0; transform:translateY(28px); }
+        100% { opacity:1; transform:translateY(0); }
+      }
+      /* Also simplify the 3-D flip — perspective+rotate is heavy on low-end */
+      .triggered.sa-flip {
+        animation-name: ia-glide;
+        animation-duration: 0.62s;
+      }
+      .triggered.sa-left  { animation-duration: 0.70s; }
+      .triggered.sa-right { animation-duration: 0.70s; }
+    }
   </style>
 </head>
 <body>
+
+  <!-- Page entrance loader — fades out once fonts + DOM are ready -->
+  <div id="page-loader" aria-hidden="true">
+    <span class="loader-heart">♥</span>
+  </div>
 
   <!-- Starfield — FIX: uses .star-field class so .star-field .s CSS applies correctly -->
   <div class="star-field" id="star-field"></div>
@@ -202,7 +225,7 @@
   </section>
 
   <!-- ════════════════ COUNTDOWN ════════════════ -->
-  <section class="section countdown-section" aria-label="Countdown to wedding day">
+  <section class="section countdown-section" id="sec-countdown" aria-label="Countdown to wedding day">
     <div class="section-inner">
 
       <header class="section-header">
@@ -251,7 +274,7 @@
   </section>
 
   <!-- ════════════════ FAMILY INTRO ═════════════ -->
-  <section class="section family-section" aria-label="Groom and bride introduction">
+  <section class="section family-section" id="sec-family" aria-label="Groom and bride introduction">
     <div class="section-inner">
 
       <header class="section-header">
@@ -290,19 +313,16 @@
     </div>
   </section>
 
-  <!-- ════════════════ EVENTS ════════════════════ -->
-  <section class="section events-section" aria-label="Event details">
+  <!-- ════════════════ WEDDING CEREMONY ════════════════════ -->
+  <section class="section events-section" id="sec-events-wedding" aria-label="Wedding ceremony details">
     <div class="section-inner">
 
       <header class="section-header">
         <span class="s-label sa-glide">— The Celebrations —</span>
-        <h2 class="s-title sa-glide" data-delay="0.13">Two Joyful <em>Occasions</em></h2>
-        <p class="s-sub sa-glide" data-delay="0.26">Mark your calendars — we cannot wait to celebrate with you</p>
+        <h2 class="s-title sa-glide" data-delay="0.13">The Auspicious <em>Union</em></h2>
       </header>
 
       <div class="events-grid">
-
-        <!-- Wedding Ceremony -->
         <article class="event-card sa-flip">
           <p class="event-label">Wedding Ceremony</p>
           <h3 class="event-title">The Auspicious Union</h3>
@@ -324,9 +344,22 @@
             class="event-map"
           >📍 &nbsp;View on Map</a>
         </article>
+      </div>
 
-        <!-- Grand Reception -->
-        <article class="event-card sa-flip" data-delay="0.28">
+    </div>
+  </section>
+
+  <!-- ════════════════ GRAND RECEPTION ════════════════════ -->
+  <section class="section events-section" id="sec-events-reception" aria-label="Reception details">
+    <div class="section-inner">
+
+      <header class="section-header">
+        <span class="s-label sa-glide">— Evening Celebration —</span>
+        <h2 class="s-title sa-glide" data-delay="0.13">The Grand <em>Reception</em></h2>
+      </header>
+
+      <div class="events-grid">
+        <article class="event-card sa-flip">
           <p class="event-label">Grand Reception</p>
           <h3 class="event-title">Evening Celebration</h3>
           <div class="event-rule"></div>
@@ -347,14 +380,13 @@
             class="event-map"
           >📍 &nbsp;View on Map</a>
         </article>
-
       </div>
 
     </div>
   </section>
 
   <!-- ════════════════ MESSAGE ════════════════════ -->
-  <section class="section message-section" aria-label="Personal message from the couple">
+  <section class="section message-section" id="sec-message" aria-label="Personal message from the couple">
     <div class="section-inner">
       <div class="message-inner">
 
@@ -389,8 +421,40 @@
     </p>
   </footer>
 
+  <!-- Section navigation dots (mobile page-by-page) -->
+  <nav class="nav-dots" id="nav-dots" aria-label="Section navigation">
+    <button class="nav-dot" data-sec="top"                  aria-label="Hero"></button>
+    <button class="nav-dot" data-sec="sec-countdown"        aria-label="Countdown"></button>
+    <button class="nav-dot" data-sec="sec-family"           aria-label="The Couple"></button>
+    <button class="nav-dot" data-sec="sec-events-wedding"   aria-label="Wedding"></button>
+    <button class="nav-dot" data-sec="sec-events-reception" aria-label="Reception"></button>
+    <button class="nav-dot" data-sec="sec-message"          aria-label="Message"></button>
+  </nav>
+
   <script src="script.js"></script>
   <script>
+    /* ── Page loader: remove once fonts are ready (max 2.5 s) ── */
+    (function () {
+      var done = false;
+      function removeLoader() {
+        if (done) return;
+        done = true;
+        var el = document.getElementById('page-loader');
+        if (!el) return;
+        el.classList.add('ready');
+        setTimeout(function () { el.remove(); }, 750);
+        /* Reveal nav dots after loader fades */
+        setTimeout(function () {
+          var nd = document.getElementById('nav-dots');
+          if (nd) nd.classList.add('visible');
+        }, 400);
+      }
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(removeLoader);
+      }
+      setTimeout(removeLoader, 2500);
+    })();
+
     document.addEventListener('DOMContentLoaded', function () {
       initStars('star-field', 140);
       initParticles('canvas', 20);
@@ -398,6 +462,7 @@
       initCountdown();
       initCountUpReveal();
       animateHeroLetters();  /* split names + start dancing */
+      initNavDots();
     });
 
     /* ── Hero name letter dance ─────────────────────
@@ -556,6 +621,45 @@
           });
         }
       }, duration / steps);
+    }
+
+    /* ── Events carousel — dot tracker + animation trigger ──
+       On mobile the two event cards are side-by-side in a
+       horizontal scroll container. This watches the scroll
+       position to update the indicator dots and ensures the
+       second card's animation fires when swiped into view.
+    ───────────────────────────────────────────────── */
+    /* ── Section navigation dots ──────────────────────
+       Tracks visible section and activates matching dot.
+       Tapping a dot smooth-scrolls to that section.
+    ───────────────────────────────────────────────── */
+    function initNavDots() {
+      var secIds = ['top', 'sec-countdown', 'sec-family', 'sec-events-wedding', 'sec-events-reception', 'sec-message'];
+      var dots   = document.querySelectorAll('.nav-dot');
+      if (!dots.length) return;
+
+      dots[0].classList.add('active'); /* hero active by default */
+
+      var obs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          var idx = secIds.indexOf(e.target.id);
+          if (idx < 0) return;
+          dots.forEach(function (d, i) { d.classList.toggle('active', i === idx); });
+        });
+      }, { threshold: 0.3 });
+
+      secIds.forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) obs.observe(el);
+      });
+
+      dots.forEach(function (dot, i) {
+        dot.addEventListener('click', function () {
+          var el = document.getElementById(secIds[i]);
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      });
     }
   </script>
 

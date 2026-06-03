@@ -112,10 +112,10 @@
 
       <span class="entry-chip">Wedding Invitation</span>
 
-      <div class="entry-names" role="heading" aria-level="1" aria-label="Sathishkumar weds Swetha">
-        <span class="n">Sathishkumar</span>
+      <div class="entry-names" role="heading" aria-level="1" aria-label="Sathishkumar K weds Swetha M">
+        <span class="n">Sathishkumar K</span>
         <span class="n-and">— weds —</span>
-        <span class="n">Swetha</span>
+        <span class="n">Swetha M</span>
       </div>
 
       <div class="ornate-rule entry-rule" aria-hidden="true">
@@ -199,11 +199,14 @@
         nameEl.style.transform          = 'none';
         nameEl.style.background         = 'none';
         nameEl.style.webkitTextFillColor = 'initial';
+        nameEl.style.whiteSpace         = 'nowrap';
 
         text.split('').forEach(function (char, i) {
           var s     = document.createElement('span');
           var delay = (1.2 + nameIdx * 0.58 + i * 0.075).toFixed(3);
-          /* Gradient applied directly to each span — visible once opacity animates to 1 */
+          /* Capital initial after a space (e.g. " K") — scale it down so it
+             matches the visual height of the surrounding lowercase script letters */
+          var isInitial = (i > 0 && text[i - 1] === ' ');
           s.style.display                = 'inline-block';
           s.style.opacity                = '0';
           s.style.background             = 'linear-gradient(140deg,#fef6ee 0%,#ffdde8 40%,#e8cc80 100%)';
@@ -212,6 +215,11 @@
           s.style.webkitTextFillColor    = 'transparent';
           s.style.animation              = 'letterDrop 0.60s cubic-bezier(0.175,0.885,0.32,1.275) forwards';
           s.style.animationDelay         = delay + 's';
+          if (isInitial) {
+            s.style.fontSize      = '0.58em';
+            s.style.verticalAlign = '0.1em';
+            s.style.marginLeft    = '0.25em';
+          }
           s.textContent = char;
           nameEl.appendChild(s);
         });

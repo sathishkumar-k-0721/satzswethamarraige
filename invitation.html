@@ -198,9 +198,9 @@
 
       <!-- ─── NAMES — separate .hname spans, each with own line-height/padding ─── -->
       <h1 class="hero-couple" aria-label="Sathishkumar K weds Swetha M">
-        <span class="hname">Sathishkumar</span>
+        <span class="hname">Sathishkumar K</span>
         <span class="hname-and">— weds —</span>
-        <span class="hname">Swetha</span>
+        <span class="hname">Swetha M</span>
       </h1>
 
       <div class="ornate-rule hero-rule" aria-hidden="true">
@@ -212,7 +212,7 @@
       </div>
 
       <p class="hero-tagline">
-        "Love found us. Now forever begins."
+        "Two souls, one destiny — written in the stars, sealed with love."
       </p>
 
     </div>
@@ -278,15 +278,14 @@
     <div class="section-inner">
 
       <header class="section-header">
-        <span class="s-label sa-glide">— The Couple —</span>
-        <h2 class="s-title sa-glide" data-delay="0.13">Two Hearts, <em>One Destiny</em></h2>
+        <h2 class="s-title sa-glide">Two Hearts, <em>One Destiny</em></h2>
       </header>
 
       <div class="family-grid">
 
         <div class="family-card sa-left">
           <p class="family-role">The Groom</p>
-          <span class="family-name">Sathishkumar</span>
+          <span class="family-name">Sathishkumar<span style="font-size:0.58em;margin-left:0.25em;vertical-align:0.1em;display:inline-block;">K</span></span>
           <p class="family-detail">
             Son of<br>
             <strong style="color:var(--gold-light);font-style:normal;">Mr. Kannan PL</strong>
@@ -299,7 +298,7 @@
 
         <div class="family-card sa-right" data-delay="0.1">
           <p class="family-role">The Bride</p>
-          <span class="family-name">Swetha</span>
+          <span class="family-name">Swetha<span style="font-size:0.58em;margin-left:0.25em;vertical-align:0.1em;display:inline-block;">M</span></span>
           <p class="family-detail">
             Daughter of<br>
             <strong style="color:var(--gold-light);font-style:normal;">Mr. Murthy M</strong>
@@ -325,7 +324,7 @@
       <div class="events-grid">
         <article class="event-card sa-flip">
           <p class="event-label">Wedding Ceremony</p>
-          <h3 class="event-title">The Auspicious Union</h3>
+          <h3 class="event-title">Muhurtham Ceremony</h3>
           <div class="event-rule"></div>
 
           <p class="event-date">18 June 2026</p>
@@ -360,8 +359,8 @@
 
       <div class="events-grid">
         <article class="event-card sa-flip">
-          <p class="event-label">Grand Reception</p>
-          <h3 class="event-title">Evening Celebration</h3>
+          <p class="event-label">Reception Celebration</p>
+          <h3 class="event-title">A Night of Joy</h3>
           <div class="event-rule"></div>
 
           <p class="event-date">21 June 2026</p>
@@ -398,15 +397,9 @@
         <span class="message-heading sa-glide" data-delay="0.22">With All Our Love</span>
 
         <p class="message-body sa-glide" data-delay="0.40">
-          What started as two hearts finding each other has grown into a lifetime promise.
-          We are overjoyed and deeply honoured to invite you — our beloved family and friends —
-          to share in the most meaningful chapter of our lives.
-        </p>
-
-        <p class="message-body sa-glide" data-delay="0.58">
-          Your presence, your laughter, and your blessings will make this day
-          <strong>truly unforgettable.</strong>
-          We cannot imagine beginning our forever without you by our side.
+          What began as two hearts finding each other has grown into a beautiful promise.
+          We are delighted to invite you to celebrate this special day with us.
+          Your presence and blessings will make our joy complete.
         </p>
 
 
@@ -486,17 +479,23 @@
 
         text.split('').forEach(function (char, i) {
           var s     = document.createElement('span');
-          /* Wave starts after h1 fades in (1.5 s), 0.1 s stagger per letter */
           var delay = (1.5 + i * 0.10).toFixed(2);
+          /* Capital initial after a space (e.g. " K") — scale it down to match
+             the visual height of the lowercase script letters around it */
+          var isInitial = (i > 0 && text[i - 1] === ' ');
 
           s.style.display              = 'inline-block';
           s.style.margin               = '0 1px';
-          /* Solid visible colour — text-shadow handles the glow effect */
           s.style.color                = '#fef6ee';
           s.style.webkitTextFillColor  = '#fef6ee';
           s.style.background           = 'none';
           s.style.animation            = 'letterWave 2.2s ease-in-out infinite';
           s.style.animationDelay       = delay + 's';
+          if (isInitial) {
+            s.style.fontSize      = '0.58em';
+            s.style.verticalAlign = '0.1em';
+            s.style.marginLeft    = '0.25em';
+          }
           s.textContent = char;
           nameEl.appendChild(s);
         });
@@ -633,8 +632,8 @@
     function initAutoScroll() {
       var secIds  = ['top', 'sec-countdown', 'sec-family',
                      'sec-events-wedding', 'sec-events-reception', 'sec-message'];
-      var AUTO_MS = 4000;
-      var IDLE_MS = 3000;
+      var AUTO_MS = 10000;
+      var IDLE_MS = 6000;
       var curIdx  = 0;
       var timer   = null;
       var busy    = false;
@@ -661,7 +660,7 @@
         clearTimeout(timer);
         timer = setTimeout(function () {
           advance();
-          var wait = (curIdx === secIds.length - 1) ? 9000 : AUTO_MS;
+          var wait = (curIdx === secIds.length - 1) ? 10000 : AUTO_MS;
           schedule(wait);
         }, ms);
       }

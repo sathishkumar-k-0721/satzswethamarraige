@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 280" fill="none">
+  <!--
+    Sathishkumar K & Swetha M — Wedding Logo
+    Concept: S · Butterfly · S
+    White on transparent · works with mix-blend-mode:screen
+  -->
+
+  <!-- ════ LEFT  S ════ -->
+  <text x="56" y="168"
+        font-family="Georgia, 'Palatino Linotype', 'Times New Roman', serif"
+        font-size="112" font-style="italic" text-anchor="middle"
+        fill="white" fill-opacity="0.90">S</text>
+
+  <!-- ════ RIGHT S ════ -->
+  <text x="344" y="168"
+        font-family="Georgia, 'Palatino Linotype', 'Times New Roman', serif"
+        font-size="112" font-style="italic" text-anchor="middle"
+        fill="white" fill-opacity="0.90">S</text>
+
+  <!-- ── thin connector lines tying the S letters to the butterfly ── -->
+  <line x1="93"  y1="148" x2="120" y2="148"
+        stroke="white" stroke-opacity="0.30" stroke-width="0.9"/>
+  <circle cx="93"  cy="148" r="2" fill="white" fill-opacity="0.40"/>
+
+  <line x1="280" y1="148" x2="307" y2="148"
+        stroke="white" stroke-opacity="0.30" stroke-width="0.9"/>
+  <circle cx="307" cy="148" r="2" fill="white" fill-opacity="0.40"/>
+
+  <!-- ════ BUTTERFLY ════ -->
+
+  <!-- Upper-left wing -->
+  <path d="M 200,122
+           C 186,104 156,89 128,93
+           C 100,97  88,118  96,139
+           C 104,160 138,159 168,148
+           C 182,143 194,133 200,128 Z"
+        fill="white" fill-opacity="0.18"
+        stroke="white" stroke-opacity="0.68" stroke-width="1.5"/>
+
+  <!-- Upper-right wing (mirror) -->
+  <path d="M 200,122
+           C 214,104 244,89  272,93
+           C 300,97  312,118 304,139
+           C 296,160 262,159 232,148
+           C 218,143 206,133 200,128 Z"
+        fill="white" fill-opacity="0.18"
+        stroke="white" stroke-opacity="0.68" stroke-width="1.5"/>
+
+  <!-- Lower-left wing -->
+  <path d="M 200,154
+           C 185,167 158,176 140,194
+           C 122,212 126,232 144,230
+           C 162,228 181,210 196,189
+           C 199,184 200,172 200,161 Z"
+        fill="white" fill-opacity="0.14"
+        stroke="white" stroke-opacity="0.55" stroke-width="1.2"/>
+
+  <!-- Lower-right wing (mirror) -->
+  <path d="M 200,154
+           C 215,167 242,176 260,194
+           C 278,212 274,232 256,230
+           C 238,228 219,210 204,189
+           C 201,184 200,172 200,161 Z"
+        fill="white" fill-opacity="0.14"
+        stroke="white" stroke-opacity="0.55" stroke-width="1.2"/>
+
+  <!-- Upper wing veins -->
+  <path d="M 200,126 C 178,112 148,99 128,96"
+        stroke="white" stroke-opacity="0.22" stroke-width="0.8" fill="none"/>
+  <path d="M 200,126 C 222,112 252,99 272,96"
+        stroke="white" stroke-opacity="0.22" stroke-width="0.8" fill="none"/>
+
+  <!-- Lower wing veins -->
+  <path d="M 200,157 C 182,174 158,192 143,210"
+        stroke="white" stroke-opacity="0.18" stroke-width="0.7" fill="none"/>
+  <path d="M 200,157 C 218,174 242,192 257,210"
+        stroke="white" stroke-opacity="0.18" stroke-width="0.7" fill="none"/>
+
+  <!-- Wing-tip accent dots -->
+  <circle cx="96"  cy="136" r="2.5" fill="white" fill-opacity="0.52"/>
+  <circle cx="304" cy="136" r="2.5" fill="white" fill-opacity="0.52"/>
+  <circle cx="143" cy="228" r="2"   fill="white" fill-opacity="0.42"/>
+  <circle cx="257" cy="228" r="2"   fill="white" fill-opacity="0.42"/>
+
+  <!-- Body -->
+  <ellipse cx="200" cy="154" rx="6.5" ry="34"
+           fill="white" fill-opacity="0.92"/>
+
+  <!-- Head -->
+  <circle cx="200" cy="116" r="5.5"
+          fill="white" fill-opacity="0.92"/>
+
+  <!-- Left antenna -->
+  <path d="M 196,112 C 185,96 166,82 157,68"
+        stroke="white" stroke-opacity="0.65" stroke-width="1.3"
+        fill="none" stroke-linecap="round"/>
+  <circle cx="156" cy="67" r="3.2" fill="white" fill-opacity="0.75"/>
+
+  <!-- Right antenna -->
+  <path d="M 204,112 C 215,96 234,82 243,68"
+        stroke="white" stroke-opacity="0.65" stroke-width="1.3"
+        fill="none" stroke-linecap="round"/>
+  <circle cx="244" cy="67" r="3.2" fill="white" fill-opacity="0.75"/>
+
+</svg>

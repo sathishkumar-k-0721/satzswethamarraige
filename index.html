@@ -159,12 +159,7 @@
       /* 3. Mouse tilt — enabled only after card flip finishes (1.4 s) */
       setTimeout(initCardTilt, 1500);
 
-      /* 4. Name glow pulse — starts after all letters have landed */
-      setTimeout(function () {
-        document.querySelectorAll('.entry-names .n').forEach(function (el) {
-          el.classList.add('n-glowing');
-        });
-      }, 3000);
+      /* 4. Name glow pulse removed — filter on .n clips overflow text on iOS */
 
       /* 5. Shooting stars */
       setTimeout(spawnShootingStar, 800);
@@ -200,6 +195,7 @@
         nameEl.style.background         = 'none';
         nameEl.style.webkitTextFillColor = 'initial';
         nameEl.style.whiteSpace         = 'nowrap';
+        nameEl.style.filter             = 'none'; /* prevent drop-shadow from clipping overflow on iOS */
 
         text.split('').forEach(function (char, i) {
           var s     = document.createElement('span');
@@ -207,14 +203,14 @@
           /* Capital initial after a space (e.g. " K") — scale it down so it
              matches the visual height of the surrounding lowercase script letters */
           var isInitial = (i > 0 && text[i - 1] === ' ');
-          s.style.display                = 'inline-block';
-          s.style.opacity                = '0';
-          s.style.background             = 'linear-gradient(140deg,#fef6ee 0%,#ffdde8 40%,#e8cc80 100%)';
-          s.style.webkitBackgroundClip   = 'text';
-          s.style.backgroundClip         = 'text';
-          s.style.webkitTextFillColor    = 'transparent';
-          s.style.animation              = 'letterDrop 0.60s cubic-bezier(0.175,0.885,0.32,1.275) forwards';
-          s.style.animationDelay         = delay + 's';
+          s.style.display             = 'inline-block';
+          s.style.opacity             = '0';
+          s.style.color               = '#fef6ee';
+          s.style.webkitTextFillColor = '#fef6ee';
+          s.style.background          = 'none';
+          s.style.textShadow          = '0 0 14px rgba(212,116,141,0.35)';
+          s.style.animation           = 'letterDrop 0.60s cubic-bezier(0.175,0.885,0.32,1.275) forwards';
+          s.style.animationDelay      = delay + 's';
           if (isInitial) {
             s.style.fontSize      = '0.58em';
             s.style.verticalAlign = '0.1em';

@@ -143,6 +143,94 @@
       animation: ia-section-glow 1.6s ease forwards;
     }
 
+    /* ═══════════════════════════════════════════
+       SECTION TITLE SIGNATURE ANIMATIONS
+       Each of the 5 main headings gets its own
+       unique entrance — all GPU-safe (transform +
+       opacity only, except sa-love on desktop).
+    ═══════════════════════════════════════════ */
+
+    /* Base: hidden + paused until IntersectionObserver fires */
+    .sa-countdown, .sa-hearts, .sa-wedding,
+    .sa-reception, .sa-love {
+      opacity: 0;
+      animation-fill-mode: both;
+      animation-play-state: paused;
+      animation-delay: var(--d, 0s);
+    }
+
+    /* ① Countdown — TICK DOWN from top with physics bounce */
+    .triggered.sa-countdown {
+      animation-name: ia-tick;
+      animation-duration: 0.92s;
+      animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      animation-play-state: running;
+    }
+    @keyframes ia-tick {
+      0%   { opacity:0; transform: translateY(-48px) scale(0.82); }
+      52%  { opacity:1; transform: translateY(8px)   scale(1.06); }
+      72%  {            transform: translateY(-4px)  scale(0.97); }
+      88%  {            transform: translateY(2px)   scale(1.01); }
+      100% { opacity:1; transform: translateY(0)     scale(1);    }
+    }
+
+    /* ② Family — HEARTBEAT double-pulse expand */
+    .triggered.sa-hearts {
+      animation-name: ia-heartbeat;
+      animation-duration: 0.95s;
+      animation-timing-function: ease-out;
+      animation-play-state: running;
+    }
+    @keyframes ia-heartbeat {
+      0%   { opacity:0; transform: scale(0.55); }
+      28%  { opacity:1; transform: scale(1.14); }
+      48%  {            transform: scale(0.92); }
+      68%  {            transform: scale(1.07); }
+      84%  {            transform: scale(0.97); }
+      100% { opacity:1; transform: scale(1);    }
+    }
+
+    /* ③ Wedding — SACRED RISE with gentle lean */
+    .triggered.sa-wedding {
+      animation-name: ia-sacred;
+      animation-duration: 0.98s;
+      animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      animation-play-state: running;
+    }
+    @keyframes ia-sacred {
+      0%   { opacity:0; transform: translateY(56px) rotate(-3deg)   scale(0.88); }
+      58%  { opacity:1; transform: translateY(-7px) rotate(0.7deg)  scale(1.02); }
+      78%  {            transform: translateY(3px)  rotate(-0.2deg) scale(1);    }
+      100% { opacity:1; transform: translateY(0)    rotate(0)       scale(1);    }
+    }
+
+    /* ④ Reception — SWEEP from right with 3-D flip */
+    .triggered.sa-reception {
+      animation-name: ia-sweep;
+      animation-duration: 0.90s;
+      animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      animation-play-state: running;
+    }
+    @keyframes ia-sweep {
+      0%   { opacity:0; transform: translateX(80px) perspective(600px) rotateY(20deg); }
+      58%  { opacity:1; transform: translateX(-8px) perspective(600px) rotateY(-2deg); }
+      78%  {            transform: translateX(4px)  perspective(600px) rotateY(0.5deg);}
+      100% { opacity:1; transform: translateX(0)    perspective(600px) rotateY(0);     }
+    }
+
+    /* ⑤ Love — DREAM DISSOLVE: blur to sharp (desktop) */
+    .triggered.sa-love {
+      animation-name: ia-dream;
+      animation-duration: 1.15s;
+      animation-timing-function: ease-out;
+      animation-play-state: running;
+    }
+    @keyframes ia-dream {
+      0%   { opacity:0; filter: blur(20px); transform: scale(1.08); }
+      60%  { opacity:1; filter: blur(3px);  transform: scale(0.99); }
+      100% { opacity:1; filter: blur(0);    transform: scale(1);    }
+    }
+
     /* ─── Mobile: strip expensive blur from scroll animations ─── */
     @media (max-width: 768px) {
       /* Redefine ia-glide without the filter:blur — saves huge GPU cost */
@@ -150,13 +238,24 @@
         0%   { opacity:0; transform:translateY(28px); }
         100% { opacity:1; transform:translateY(0); }
       }
-      /* Also simplify the 3-D flip — perspective+rotate is heavy on low-end */
+      /* Simplify 3-D flip */
       .triggered.sa-flip {
         animation-name: ia-glide;
         animation-duration: 0.62s;
       }
       .triggered.sa-left  { animation-duration: 0.70s; }
       .triggered.sa-right { animation-duration: 0.70s; }
+      /* Love section: no blur on mobile — transform only */
+      .triggered.sa-love {
+        animation-name: ia-float;
+        animation-duration: 0.88s;
+      }
+      @keyframes ia-float {
+        0%   { opacity:0; transform: translateY(-28px) scale(1.12); }
+        58%  { opacity:1; transform: translateY(6px)   scale(0.97); }
+        78%  {            transform: translateY(-3px)  scale(1.01); }
+        100% { opacity:1; transform: translateY(0)     scale(1);    }
+      }
     }
   </style>
 </head>
@@ -230,7 +329,7 @@
 
       <header class="section-header">
         <span class="s-label sa-glide">— The Big Day —</span>
-        <h2 class="s-title sa-glide" data-delay="0.13">The Wait Is Almost <em>Over</em></h2>
+        <h2 class="s-title sa-countdown" data-delay="0.13">The Wait Is Almost <em>Over</em></h2>
         <p class="s-sub sa-glide" data-delay="0.26">Every second brings us closer to forever</p>
       </header>
 
@@ -278,7 +377,7 @@
     <div class="section-inner">
 
       <header class="section-header">
-        <h2 class="s-title sa-glide">Two Hearts, <em>One Destiny</em></h2>
+        <h2 class="s-title sa-hearts">Two Hearts, <em>One Destiny</em></h2>
       </header>
 
       <div class="family-grid">
@@ -318,7 +417,7 @@
 
       <header class="section-header">
         <span class="s-label sa-glide">— The Celebrations —</span>
-        <h2 class="s-title sa-glide" data-delay="0.13">The Auspicious <em>Union</em></h2>
+        <h2 class="s-title sa-wedding" data-delay="0.13">The Auspicious <em>Union</em></h2>
       </header>
 
       <div class="events-grid">
@@ -354,7 +453,7 @@
 
       <header class="section-header">
         <span class="s-label sa-glide">— Evening Celebration —</span>
-        <h2 class="s-title sa-glide" data-delay="0.13">The Grand <em>Reception</em></h2>
+        <h2 class="s-title sa-reception" data-delay="0.13">The Grand <em>Reception</em></h2>
       </header>
 
       <div class="events-grid">
@@ -394,7 +493,7 @@
           <img src="logo.png" class="ss-logo-img" alt="Sathishkumar &amp; Swetha monogram" />
         </figure>
 
-        <span class="message-heading sa-glide" data-delay="0.22">With All Our Love</span>
+        <span class="message-heading sa-love" data-delay="0.22">With All Our Love</span>
 
         <p class="message-body sa-glide" data-delay="0.40">
           What began as two hearts finding each other has grown into a beautiful promise.
@@ -507,7 +606,7 @@
        and new .sa-* /.triggered elements.
     ───────────────────────────────────────────────── */
     function initAnimations() {
-      var SA   = '.sa-glide,.sa-left,.sa-right,.sa-drop,.sa-flip,.sa-bloom';
+      var SA   = '.sa-glide,.sa-left,.sa-right,.sa-drop,.sa-flip,.sa-bloom,.sa-countdown,.sa-hearts,.sa-wedding,.sa-reception,.sa-love';
       var saEls  = document.querySelectorAll(SA);
       var revEls = document.querySelectorAll('.reveal');
 

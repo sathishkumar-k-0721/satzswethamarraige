@@ -696,7 +696,6 @@ body {
   color: var(--rose);
   line-height: 1;
   padding: 0.1em;
-  animation: pulseHeart 2s ease infinite;
   display: block;
   text-align: center;
 }

@@ -110,6 +110,7 @@ body {
   animation: pulseHeart 2s ease infinite;
   display: inline-block;
   flex-shrink: 0;
+  font-family: var(--font-display); /* prevent iOS emoji font override */
 }
 .ornate-rule .rule-diamond {
   font-size: 11px;
@@ -690,7 +691,7 @@ body {
   line-height: 1.65;
 }
 .family-sep {
-  font-family: var(--font-script);
+  font-family: var(--font-display); /* prevent iOS emoji font override on ♥ */
   font-size: clamp(42px, 8vw, 64px);
   color: var(--rose);
   line-height: 1;

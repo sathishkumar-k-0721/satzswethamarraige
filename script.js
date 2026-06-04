@@ -36,7 +36,7 @@ function initStars(containerId, count) {
    PARTICLE COLOURS — shared by hearts & butterflies
 ═══════════════════════════════════════════════ */
 var HEART_COLORS = [
-  '#d4768e', '#e8a0b8', '#f4a8bc',
+  '#e8a0bf', '#e8a0b8', '#f4a8bc',
   '#c9a84c', '#e8cc80', '#e090b0', '#f9c8d8',
 ];
 
